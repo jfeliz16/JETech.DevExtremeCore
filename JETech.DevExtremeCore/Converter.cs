@@ -82,7 +82,7 @@ namespace JETech.DevExtremeCore
                     switch (exp)
                     {
                         case "contains":
-                            expItem = ConverterExpression.GetContainsExpression<t>(col, value);                           
+                            expItem = ConverterExpression.GetContainsExpression<t>(col, value,true);                           
                             break;
                         default:
                             break;
