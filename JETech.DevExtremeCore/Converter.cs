@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using JETech.NetCoreWeb.Helper;
+using JETech.NetCoreWeb.Extensions;
 
 namespace JETech.DevExtremeCore
 {
@@ -88,23 +89,8 @@ namespace JETech.DevExtremeCore
                             break;
                     }
                     if (expResult != null && expItem != null)
-                    {
-                        ParameterExpression param = expResult.Parameters[0];
-
-                        if (ReferenceEquals(param, expItem.Parameters[0]))
-                        {
-                            // simple version
-                            expResult = Expression.Lambda<Func<t, bool>>(
-                                Expression.AndAlso(expItem.Body, expResult.Body), param);
-                        }
-                        else 
-                        {
-                            // otherwise, keep expr1 "as is" and invoke expr2
-                            expResult = Expression.Lambda<Func<t, bool>>(
-                                Expression.AndAlso(
-                                    expResult.Body,
-                                    Expression.Invoke(expItem, param)), param);
-                        }          
+                    {           
+                        expResult = expResult.AndAlso<t>(expItem);
                     }
                     else if (expItem != null) 
                     {
@@ -112,7 +98,6 @@ namespace JETech.DevExtremeCore
                     }
                 }
             }
-
             return expResult;
         }
     }
